@@ -8,36 +8,56 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    background-color: rgb(rgb(0, 62, 177), green, blue);
+    background-color: rgb(rgb(130, 135, 145), green, blue);
     border: 2px solid black;
-    height: 500px;
-    width: 400px;
 }
 
 #display {
     align-self: center;
-    flex: auto;
-    background-color: rgb(255, 255, 255);
-    border: 2px solid black ;
-    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    border-radius: 25px;
+    border: 2px solid #000000;
+    padding: 20px;
+    margin: 20px;
+    width: 80%;
+    height: 60px;
+    text-align: right;
+}
+
+#equation {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
+    text-align: right;
+    margin: 4px;
+}
+
+#entry {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: xx-large;
+    text-align: right;
+    margin: 4px;
 }
 
 .buttongrid {
     align-self:stretch;
-    flex: auto;
+    width: 100;
     display: grid;
     padding: 20px;
-    margin: 20px;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 1fr);
 }
 
 button {
-    background-color: rgb(rgba(24, 22, 22, 0.801), green, blue);
+    background-color: rgb(rgba(116, 113, 113, 0.801), green, blue);
     border: none;
     color: rgb(0, 0, 0);
     padding: 30px;
+    margin: 2px;
     text-align: center;
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
     border-radius: 30%;
     display: inline-block;
     vertical-align: middle;
@@ -50,7 +70,7 @@ button {
     transition-property: transform;
 }
 
-button:hover, button:focus, button:active {
+button:hover, button:active {
     -webkit-transform: scale(0.9);
     transform: scale(0.9);
 }

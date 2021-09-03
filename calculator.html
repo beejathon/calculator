@@ -3,36 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="calculator.js"></script>
+    <script src="calculator.js" defer></script>
     <title>Calculator</title>
 </head>
 
 <body>
     <div class="container">
+        <h1>A SIMPLE CALCULATOR</h1>
         <div id="calc-container">
-            <div id="display"></div>
+            <div id="display">
+                <p id="equation"></p>
+                <p id="currentValue"></p>
+            </div>
             <div class="buttongrid">
-                <button id="clear">AC</button>
-                <button id="delete">C</button>
+                <button id="all-clr">AC</button>
+                <button id="clr-entry">C</button>
                 <button id="percent">%</button>
-                <button id="divide">/</button>
+                <button id="/">/</button>
                 <button id="7">7</button>
                 <button id="8">8</button>
                 <button id="9">9</button>
-                <button id="add">+</button>
+                <button id="+">+</button>
                 <button id="4">4</button>
                 <button id="5">5</button>
                 <button id="6">6</button>
-                <button id="subtract">-</button>
+                <button id="-">-</button>
                 <button id="1">1</button>
                 <button id="2">2</button>
                 <button id="3">3</button>
-                <button id="multiply">*</button>
+                <button id="*">*</button>
                 <button id="0">0</button>
-                <button id="decimal">.</button>
+                <button id=".">.</button>
                 <button id="equals">=</button>
             </div>
         </div>
     </div>
+
 </body>
 </html>
