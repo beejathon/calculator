@@ -28,14 +28,14 @@
 
 #equation {
     font-family: 'Courier New', Courier, monospace;
-    font-size: large;
+    font-size: medium;
     text-align: right;
     margin: 4px;
 }
 
 #entry {
     font-family: 'Courier New', Courier, monospace;
-    font-size: xx-large;
+    font-size: xxx-large;
     text-align: right;
     margin: 4px;
 }
