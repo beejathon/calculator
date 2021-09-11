@@ -12,79 +12,77 @@ const inputNum = (e) => {
     } else if (e.target.id == '.' && lastInput == 'num' && !decCheck) {
         inputBuffer.push(e.target.id);
         operands.splice(0, 1, parseFloat(inputBuffer.join('')));
-        equationArray.splice(0, 1, parseFloat(inputBuffer.join('')));
+        equationArray.splice(equationArray.length-1, 1, parseFloat(inputBuffer.join('')));
         currentValue.textContent = inputBuffer.join('');
-        equation.textContent = equationArray.reverse().join(' ');
+        equation.textContent = equationArray.join(' ');
         lastInput = 'dec';
         return;
     } else if (inputBuffer.length >= 1) {
         inputBuffer.push(parseFloat(e.target.id));
         operands.splice(0, 1, parseFloat(inputBuffer.join('')));
-        equationArray.splice(0, 1, parseFloat(inputBuffer.join('')));
+        equationArray.splice(equationArray.length-1, 1, parseFloat(inputBuffer.join('')));
         currentValue.textContent = inputBuffer.join('');
-        equation.textContent = equationArray.reverse().join(' ');
+        equation.textContent = equationArray.join(' ');
         lastInput = 'num';
         return;
     } else {
-        inputBuffer.push(parseInt(e.target.id))
-        operands.unshift(parseInt(e.target.id));
-        equationArray.unshift(e.target.id);
+        inputBuffer.push(parseFloat(e.target.id))
+        operands.unshift(parseFloat(e.target.id));
+        equationArray.push(parseFloat(inputBuffer.join('')));
         currentValue.textContent = parseFloat(inputBuffer.join(''));
-        equation.textContent = equationArray.reverse().join(' ');
+        equation.textContent = equationArray.join(' ');
         lastInput = 'num';
     }
 }
 
 const inputOp = (e) => {
     if (lastInput == 'op') return;
-    if (e.target.id == '%') {
+    if (operands.length >= 2) {
         operators.unshift(e.target.id);
-        equationArray.unshift(e.target.id);
-        inputBuffer.splice(0, inputBuffer.length);
+        equationArray.push(e.target.id);
+        inputBuffer.splice(0);
         operate();
-        lastInput = 'spcl';
-        return;
-    } else if (operands.length >=2 && lastInput == 'spcl') {
+        equation.textContent = equationArray.join(' ');
+    } else {
         operators.unshift(e.target.id);
-        equationArray.unshift(e.target.id);
-        inputBuffer.splice(0, inputBuffer.length);
-        lastInput = 'op';
-    } else if (operands.length >= 2) {
-        operators.unshift(e.target.id);
-        equationArray.unshift(e.target.id);
-        inputBuffer.splice(0, inputBuffer.length);
-        operate();
-        lastInput = 'op';
+        equationArray.push(e.target.id);
+        inputBuffer.splice(0);
+        equation.textContent = equationArray.join(' ');
     }
+    lastInput = 'op';
+}
+
+const inputEquals = (e) => {
+    operate();
+    operands.splice(1, (operands.length -1))
+    operators.splice(0);
+    inputBuffer.splice(0);
+    equation.textContent = equationArray.join(' ');
+    lastInput = 'num';
+    return;
 }
 
 const inputSpcl = (e) => {
-    if (e.target.id == 'equals' && lastInput == 'num') {
-        operate();
-        operands.splice(1, (operands.length -1))
-        operators.splice(0, operators.length);
-        inputBuffer.splice(0, inputBuffer.length);
-        equation.textContent = equationArray.reverse().join(' ');
-        lastInput = 'num';
-        return;
-    } else if (e.target.id == 'all-clr') {
-        operands.splice(0, operands.length);
-        operators.splice(0, operators.length);
-        equationArray.splice(0, equationArray.length);
-        inputBuffer.splice(0, inputBuffer.length);
-        currentValue.textContent = '';
-        equationArray.textContent = '';
+    if (e.target.id == 'all-clr') {
+        operands.splice(0);
+        operators.splice(0);
+        equationArray.splice(0);
+        inputBuffer.splice(0);
+        currentValue.textContent = ' ';
+        equationArray.textContent = ' ';
         lastInput = 'spcl';
+    } else if (e.target.id == 'clr-entry' && inputBuffer.length == 0) {
+        return;
     } else if (e.target.id == 'clr-entry' && lastInput == 'op') {
         operators.shift();
-        equationArray.shift();
+        equationArray.pop();
         lastInput = 'num';
-    } else if (e.target.id == 'clr-entry' && lastInput =='num') {
-        inputBuffer.shift();
+    } else if (e.target.id == 'clr-entry' && (lastInput == 'num' || lastInput == 'dec')) {
+        inputBuffer.pop();
         operands.splice(0, 1, parseFloat(inputBuffer.join('')));
-        equationArray.splice(0, 1, parseFloat(inputBuffer.join('')));
+        equationArray.splice(equationArray.length-1, 1, parseFloat(inputBuffer.join('')));
         currentValue.textContent = parseFloat(inputBuffer.join(''));
-        equation.textContent = equationArray.reverse().join(' ');
+        equation.textContent = equationArray.join(' ');
         lastInput = 'num';
     }
 }
@@ -93,7 +91,7 @@ function operate() {
     let result;
     if (operators[0] == '/' && operands[0] == 0) {
         currentValue.textContent = 'WE LIVE IN A SOCIETY';
-        equation.textContent = equationArray.reverse().join(' ');
+        equation.textContent = equationArray.join(' ');
         return;
     }
     if (operators[0] == '+') result = add(operands[1], operands[0]);
@@ -103,7 +101,7 @@ function operate() {
     if (operators[0] == '%') result = percent(operands[0]);
     operands.unshift(round(parseFloat(result), 15));
     currentValue.textContent = round(parseFloat(result), 15);
-    equation.textContent = equationArray.reverse().join(' ');
+    equation.textContent = equationArray.join(' ');
 }
 
 function round(value, decimals) {
@@ -113,18 +111,20 @@ function round(value, decimals) {
 const operands = [];
 const operators = [];
 const equationArray = [];
-const inputBuffer = []
+const inputBuffer = [];
 let lastInput;
 
-const equation = document.querySelector('#equation');
+const equation = document.getElementById('equation');
 equation.textContent = '';
-const currentValue = document.querySelector('#currentValue');
+const currentValue = document.getElementById('currentValue');
 currentValue.textContent = '';
 
 
-const numButtons = document.querySelectorAll('.num');
-numButtons.forEach(numButton => numButton.addEventListener('click', inputNum));
-const opButtons = document.querySelectorAll('.op');
-opButtons.forEach(opButton => opButton.addEventListener('click', inputOp));
-const spclButtons = document.querySelectorAll('.spcl');
-spclButtons.forEach(spclButton => spclButton.addEventListener('click', inputSpcl))
+const numBtns = document.querySelectorAll('.num');
+numBtns.forEach(numBtn => numBtn.addEventListener('click', inputNum));
+const opBtns = document.querySelectorAll('.op');
+opBtns.forEach(opBtn => opBtn.addEventListener('click', inputOp));
+const equalsBtn = document.getElementById('equals');
+equalsBtn.addEventListener('click', inputEquals);
+const spclBtns = document.querySelectorAll('.spcl');
+spclBtns.forEach(spclBtn => spclBtn.addEventListener('click', inputSpcl));
